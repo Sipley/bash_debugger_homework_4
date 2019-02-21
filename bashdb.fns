@@ -178,7 +178,7 @@ function _xtrace
 }
 
 # Print command menu
-function _menu{
+function _menu {
     _msg 'bashdb commands:
         bp N        set breakpoint at line N
         bp          list breakpoints and break condition
