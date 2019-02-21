@@ -117,7 +117,7 @@ function _displayscript
     local i=1 j=o bp cl
 
     ( while (( $i < ${#_lines[@]} )); do
-        if [ ${_linebp[$j]} ] && (( ${_linebp[$j]} == $1 )); then
+        if [ ${_linebp[$j]} ] && (( ${_linebp[$j]} == $i )); then
             bp='*'
             let j=$j+1
         else
