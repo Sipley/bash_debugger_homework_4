@@ -64,6 +64,18 @@ function _setbp
 {
     local i
 
+    # If there are no arguments call the breakpoint list function.
+    # Otherwise check to see if the argument was a positive number.
+    # If it wasn't then print an error message. If it was then check
+    # to see if the line number contains text. If it doesn't then
+    # print an error message. If it does then echo he current
+    # breakpoints and the new addition and pipe them to "sort" and
+    # assign the result back to the list of breakpoints. This results
+    # in keeping the breakpoints in numerical sorted order.
+
+    # Note that we can remove duplicate breakpoints here by using
+    # the -u option to sort which uniquifies the list.
+
     if [ -z "$1" ]; then
         _listbp
     elif [ $(echo $1 | grep '^[0-9]*')  ]; then
@@ -77,6 +89,17 @@ function _setbp
     else
         _msg "Please specify a numeric line number"
     fi
+}
+
+function _listbp
+{
+    if [ -n "$_linebp" ]; then
+        _msg "Breakpoints at lines: ${_linebp[*]}"
+    else
+        _msg "No breakpoints have been set"
+    fi
+    _msg "Break on condition:"
+    _msg "$_brcond"
 }
 
 function _clearbp
