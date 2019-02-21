@@ -99,7 +99,7 @@ function _at_linenumbp
 {
     local i=0
 
-    if [ "$_linebp" }; then
+    if [ "$_linebp" ]; then
         while (( $i < ${#_linebp[@]} )); do
             if (( ${_linebp[$i]} == $_curline )); then
                 return 0
