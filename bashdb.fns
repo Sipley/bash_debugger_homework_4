@@ -135,3 +135,9 @@ function _displayscript
     done
     ) | more
 }
+
+# Print the passed arguments to Standdard Error
+function _msg
+{
+    echo -e "$@" >&2
+}
