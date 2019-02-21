@@ -5,7 +5,7 @@ function _steptrap
 {
     _curline=$1     # the number of the line that just ran
 
-    (( $_trace )) %% _msg "$PS4 line $_curline: ${_lines[$_curline]}"
+    (( $_trace )) && _msg "$PS4 line $_curline: ${_lines[$_curline]}"
 
     if (( $_steps >= 0 )); then
         let _steps="$_steps - 1"
