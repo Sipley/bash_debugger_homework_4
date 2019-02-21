@@ -159,8 +159,38 @@ function _displayscript
     ) | more
 }
 
-# Print the passed arguments to Standdard Error
+# Print the passed arguments to Standard Error
 function _msg
 {
     echo -e "$@" >&2
+}
+
+# Toggle execution trace on/off
+function _xtrace
+{
+    let _trace=! $_trace"
+    _msg "Execution trace "
+    if (( $_trace )); then
+        _msg "on"
+    else
+        _msg "off"
+    fi
+}
+
+# Print command menu
+function _menu{
+    _msg 'bashdb commands:
+        bp N        set breakpoint at line N
+        bp          list breakpoints and break condition
+        bc string   set break condition to string
+        bc          clear break condition
+        cb N        clear breakpoint at line N
+        cb          clear all breakpoints
+        ds          displays the test script and breakpoints
+        g           start/resume execution
+        s [N]       execute N statements (default 1)
+        x           toggle execution trace on/off
+        h, ?        print this menu
+        ! string    passes string to a shell
+        q           quit'
 }
