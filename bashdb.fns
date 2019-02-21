@@ -168,7 +168,7 @@ function _msg
 # Toggle execution trace on/off
 function _xtrace
 {
-    let _trace=! $_trace"
+    let _trace="! $_trace"
     _msg "Execution trace "
     if (( $_trace )); then
         _msg "on"
