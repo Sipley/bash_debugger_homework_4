@@ -40,15 +40,12 @@ function _cmdloop {
         case $cmd in
             \? | h  ) _menu ;;  # print command menu
             bc ) _setbc $args ;;    # set a break condition
-            bp ) _setbp $args ;;    # set a breakpoint at the given
-                                    # line
+            bp ) _setbp $args ;;    # set a breakpoint at the given line
             cb ) _clearbp $args ;;  # clear one or all breakpoints
             ds ) _displayscript ;;   # list the script and show the
                                     # breakpoints
-            g  ) return ;;          # "go": start/resume execution of
-                                    # the script
+            g  ) return ;;          # "go": start/resume execution of the script
             q  ) exit ;;            # quit
-            
             s ) let _steps=${args:-1}   # single step N times
                                         # (default = 1)
                 return ;;
@@ -104,14 +101,28 @@ function _listbp
 
 function _clearbp
 {
-    local i
+    local i bps
+
+    # If there are no arguments, then delete all teh breakpoints.
+    # Otherwise, check to see if the argument was a positive number.
+    # If it wasn't, then print an error message. If it was, then
+    # echo all of the current breakpoints except the passed one
+    # and assign them to a local variable. (We need to do this because
+    # assigning them back to _linebp would keep the array at the same
+    # size and just move the values "back" one place, resulting in a
+    # duplicate value). Then destroy the old array and assign the
+    # elements of the local array, so we effectively recreate it,
+    # minus the passed breakpoint.
+
     if [ -z "$1" ]; then
        unset _linebp[*]
        _msg "All breakpoints have been cleared"
     elif [ $(echo $1 | grep '^[0-9]*')  ]; then
-       _linebp=($(echo $(for i in ${_linebp[*]}; do
-          if (( $1 != $i )); then echo $i; fi; done) ))
-           _msg "Breakpoint cleared at line $1"
+        bps=($echo $(for i in ${_linebp[*]); do
+            if (( $1 != $i )); then echo $i; fi; done) ))
+        unset _linebp[*]
+        _linebp=(${bps[*]})
+        _msg "Breakpoint cleared at line $1"
     else
            _msg "Please specify a numeric line number"
     fi
@@ -121,6 +132,10 @@ function _clearbp
 function _at_linenumbp
 {
     local i=0
+
+    # Loop through the breakpoints array & check to see if any of
+    # them match the current line number. If they do return true (0)
+    # otherwise return false.
 
     if [ "$_linebp" ]; then
         while (( $i < ${#_linebp[@]} )); do
