@@ -56,6 +56,26 @@ function _cmdloop {
     done
 }
 
+# See if this line number has a breakpoint
+function _at_linenumbp
+{
+    local i=0
+
+    # Loop through the breakpoints array & check to see if any of
+    # them match the current line number. If they do return true (0)
+    # otherwise return false.
+
+    if [ "$_linebp" ]; then
+        while (( $i < ${#_linebp[@]} )); do
+            if (( ${_linebp[$i]} == $_curline )); then
+                return 0
+            fi
+            let i=$i+1
+        done
+    fi
+    return 1
+}
+
 # Set a breakpoint at the given line number or list breakpoints
 function _setbp
 {
@@ -88,18 +108,7 @@ function _setbp
     fi
 }
 
-# Set or clear a break condition
-
-function _setbc
-{
-    if [ -n "$*" ]; then
-        _brcond=$args
-        _msg "Break when true: $_brcond"
-    else
-        _brcond=
-        _msg "Break condition cleared"
-    fi
-}
+# List breakpoint and break conditions
 
 function _listbp
 {
@@ -112,6 +121,7 @@ function _listbp
     _msg "$_brcond"
 }
 
+# Clear individual or all breakpoints
 function _clearbp
 {
     local i bps
@@ -139,26 +149,19 @@ function _clearbp
     else
            _msg "Please specify a numeric line number"
     fi
-}    
+}
 
-# See if this line number has a breakpoint
-function _at_linenumbp
+# Set or clear a break condition
+
+function _setbc
 {
-    local i=0
-
-    # Loop through the breakpoints array & check to see if any of
-    # them match the current line number. If they do return true (0)
-    # otherwise return false.
-
-    if [ "$_linebp" ]; then
-        while (( $i < ${#_linebp[@]} )); do
-            if (( ${_linebp[$i]} == $_curline )); then
-                return 0
-            fi
-            let i=$i+1
-        done
+    if [ -n "$*" ]; then
+        _brcond=$args
+        _msg "Break when true: $_brcond"
+    else
+        _brcond=
+        _msg "Break condition cleared"
     fi
-    return 1
 }
 
 # Print out the shell script and mark the location of breakpoints
@@ -187,12 +190,6 @@ function _displayscript
     ) | more
 }
 
-# Print the passed arguments to Standard Error
-function _msg
-{
-    echo -e "$@" >&2
-}
-
 # Toggle execution trace on/off
 function _xtrace
 {
@@ -203,6 +200,12 @@ function _xtrace
     else
         _msg "off"
     fi
+}
+
+# Print the passed arguments to Standard Error
+function _msg
+{
+    echo -e "$@" >&2
 }
 
 # Print command menu
