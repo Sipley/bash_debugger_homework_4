@@ -88,6 +88,19 @@ function _setbp
     fi
 }
 
+# Set or clear a break condition
+
+function _setbc
+{
+    if [ -n "$*" ]; then
+        _brcond=$args
+        _msg "Break when true: $_brcond"
+    else
+        _brcond=
+        _msg "Break condition cleared"
+    fi
+}
+
 function _listbp
 {
     if [ -n "$_linebp" ]; then
@@ -118,7 +131,7 @@ function _clearbp
        unset _linebp[*]
        _msg "All breakpoints have been cleared"
     elif [ $(echo $1 | grep '^[0-9]*')  ]; then
-        bps=($echo $(for i in ${_linebp[*]); do
+        bps=($(echo $(for i in ${_linebp[*]}; do
             if (( $1 != $i )); then echo $i; fi; done) ))
         unset _linebp[*]
         _linebp=(${bps[*]})
