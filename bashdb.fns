@@ -43,7 +43,7 @@ function _cmdloop {
             bp ) _setbp $args ;;    # set a breakpoint at the given
                                     # line
             cb ) _clearbp $args ;;  # clear one or all breakpoints
-            ds ) displayscript ;;   # list the script and show the
+            ds ) _displayscript ;;   # list the script and show the
                                     # breakpoints
             g  ) return ;;          # "go": start/resume execution of
                                     # the script
