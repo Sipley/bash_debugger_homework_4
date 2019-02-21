@@ -69,7 +69,7 @@ function _setbp
     elif [ $(echo $1 | grep '^[0-9]*')  ]; then
         if [ -n "${_lines[$1]}" ]; then
             _linebp=($(echo $( (for i in ${_linebp[*]} $1; do
-                echo $i; done) } sort -n) ))
+                echo $i; done) | sort -n) ))
             _msg "Breakpoint set at line $1"
         else
             _msg "Breakpoints can only be set on non-blank lines"
