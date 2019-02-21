@@ -57,7 +57,7 @@ function _cmdloop {
             *  ) _msg "Invalid command:  '$cmd'" ;;
         esac
     done
-   }
+}
 
 # Set a breakpoint at the given line number or list breakpoints
 function _setbp
