@@ -194,3 +194,9 @@ function _menu{
         ! string    passes string to a shell
         q           quit'
 }
+
+# Erase the temporary file before exiting
+function _cleanup
+{
+    rm $_debugfile 2>/dev/null
+}
