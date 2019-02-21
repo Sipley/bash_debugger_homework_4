@@ -74,6 +74,9 @@ function _setbp
         else
             _msg "Breakpoints can only be set on non-blank lines"
         fi
+    else
+        _msg "Please specify a numeric line number"
+    fi
 }
 
 function _clearbp
